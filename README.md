@@ -6,22 +6,22 @@ This repository contains the simulation framework, traces, and results for analy
 ## Directory Structure & File Descriptions
 
 ### `/src` (Source Code)
-*   **`tier_simulator.py`**: The baseline analytical engine. Models the access latency trade-offs between HBM and CXL.
-*   **`periodic_reprofile.py`**: Implements our core hypothesis—re-evaluating expert popularity periodically vs. Pure Static and Pure LRU caching.
-*   **`hybrid_strategy.py`** & **`tune_hybrid_dataset2.py`**: Evaluates splitting the cache budget between static reservations and an LRU pool.
-*   **`generate_trace.py`** & **`generate_burst_trace.py`**: Synthetic data generators mimicking MoE Dirichlet skews and temporal locality for testing.
-*   **`robustness_check.py`**: A cross-validation script ensuring the strategies hold up under different random seeds and skews.
-*   **`calc_energy.py`**: Calculates total energy (in millijoules) based on HBM/CXL access counts mapped against physical DRAMSim3 data.
+*   [**`tier_simulator.py`**](src/tier_simulator.py): The baseline analytical engine. Models the access latency trade-offs between HBM and CXL.
+*   [**`periodic_reprofile.py`**](src/periodic_reprofile.py): Implements our core hypothesis—re-evaluating expert popularity periodically vs. Pure Static and Pure LRU caching.
+*   [**`hybrid_strategy.py`**](src/hybrid_strategy.py) & [**`tune_hybrid_dataset2.py`**](src/tune_hybrid_dataset2.py): Evaluates splitting the cache budget between static reservations and an LRU pool.
+*   [**`generate_trace.py`**](src/generate_trace.py) & [**`generate_burst_trace.py`**](src/generate_burst_trace.py): Synthetic data generators mimicking MoE Dirichlet skews and temporal locality for testing.
+*   [**`robustness_check.py`**](src/robustness_check.py): A cross-validation script ensuring the strategies hold up under different random seeds and skews.
+*   [**`calc_energy.py`**](src/calc_energy.py): Calculates total energy (in millijoules) based on HBM/CXL access counts mapped against physical DRAMSim3 data.
 
 ### `/data` (Datasets & Traces)
 *   **`real_expert_trace.csv`**: 829,000+ real-world top-2 routing decisions extracted from HuggingFace (Layer 15).
 *   **`real_expert_trace_layer31.csv`**: 829,000+ real routing decisions extracted from the deepest layer (Layer 31), highlighting heavy expert specialization.
-*   *(Note: Large `.csv` and `.txt` trace files are intentionally excluded via `.gitignore` to preserve repository hygiene).*
+*   *(Note: These massive trace files are processed locally but intentionally excluded from GitHub via `.gitignore` to prevent repository bloat. They are not clickable here).*
 
 ### `/results` (Metrics & Visualization)
-*   **`tiering_sweep_results.csv`** & **`tiering_sweep.png`**: Demonstrates the linear latency penalty of offloading experts to CXL.
-*   **`four_strategy_comparison.png`**: Phase-by-phase visualization showing how different caching policies react to workload shifts.
-*   **`energy_metrics.csv`**: Millijoule tracking showing how optimal tiering (like LRU) saves ~8% of total memory power.
+*   [**`tiering_sweep_results.csv`**](results/tiering_sweep_results.csv) & [**`tiering_sweep.png`**](results/tiering_sweep.png): Demonstrates the linear latency penalty of offloading experts to CXL.
+*   [**`four_strategy_comparison.png`**](results/four_strategy_comparison.png): Phase-by-phase visualization showing how different caching policies react to workload shifts.
+*   [**`energy_metrics.csv`**](results/energy_metrics.csv): Millijoule tracking showing how optimal tiering (like LRU) saves ~8% of total memory power.
 
 ### `/dashboard` (Interactive Demo)
-*   **`app.py`**: A Streamlit web application. Run `streamlit run app.py` to view an interactive visualization of the simulation results, capacity sliders, and real-world trace hit rates.
+*   [**`app.py`**](dashboard/app.py): A Streamlit web application. Run `streamlit run app.py` locally to view an interactive visualization of the simulation results, capacity sliders, and real-world trace hit rates.
