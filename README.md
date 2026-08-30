@@ -5,6 +5,12 @@
 *   **Memory Tiering (HBM + CXL):** High-Bandwidth Memory (HBM) is incredibly fast but expensive and limited in capacity. Compute Express Link (CXL) allows us to plug in massive amounts of cheaper, slower memory.
 *   **Our Goal:** If we put active experts in fast HBM and idle experts in slower CXL, we save massive amounts of capacity. But since workloads shift, we need a "smart" caching strategy (like LRU or Periodic Re-profiling) to dynamically swap experts in and out of HBM without ruining the AI's speed or consuming too much power.
 
+## 🚀 Key Findings (TL;DR)
+After evaluating over 1.6 million real-world routing decisions from the Mixtral 8x7B model alongside cycle-accurate hardware simulations, we discovered that **a one-size-fits-all caching policy is sub-optimal for MoE models**:
+*   **Finding 1 (Middle Layers are Reactive):** At middle layers (e.g., Layer 15), context shifts rapidly. A highly reactive **Pure LRU** caching strategy dominates here, achieving a **64.9% HBM hit rate** (beating static allocation by over 7%).
+*   **Finding 2 (Deep Layers are Specialized):** At deep layers (e.g., Layer 31), experts become highly specialized for deep semantic logic. Routing becomes heavily skewed toward specific experts, allowing **Periodic Re-profiling** and Static allocation to take the lead with a **~67.2% hit rate**.
+*   **Finding 3 (Significant Energy Savings):** Using cycle-accurate DRAMSim3 hardware physics, we proved that intelligent tiering doesn't just save latency—it reduces total memory power consumption by **~8%** by actively preventing expensive fetches across the CXL PCIe bus.
+
 ## 🗺️ How to Read This Project (Step-by-Step)
 If you are evaluating this repository, it can look intimidating. We recommend exploring the files in this logical order:
 
