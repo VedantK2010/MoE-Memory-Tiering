@@ -1,0 +1,9 @@
+# Ignore large data traces
+data/*.csv
+data/*.txt
+!data/.keep
+
+# Python cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
